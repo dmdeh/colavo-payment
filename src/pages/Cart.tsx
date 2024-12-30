@@ -25,13 +25,11 @@ const Cart = () => {
         {/* item */}
       </Main>
       <Footer>
-        <Total>
-          <TotalRow>
-            <TotalLabel>합계</TotalLabel>
-            <TotalAmount>0원</TotalAmount>
-          </TotalRow>
-          <NextButton>다음</NextButton>
-        </Total>
+        <TotalRow>
+          <TotalLabel>합계</TotalLabel>
+          <TotalAmount>0원</TotalAmount>
+        </TotalRow>
+        <NextButton>다음</NextButton>
       </Footer>
     </Container>
   );
@@ -66,10 +64,6 @@ const MenuButton = styled.button<{ $menu: string }>`
   align-items: center;
   gap: 10px;
   cursor: pointer;
-`;
-
-const Total = styled.div`
-  margin: 10px;
 `;
 
 const TotalRow = styled.div`

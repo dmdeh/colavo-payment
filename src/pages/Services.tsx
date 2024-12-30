@@ -3,66 +3,74 @@ import theme from "../styles/theme";
 import { Container, Header, Main, Footer } from "../styles/layout";
 import { useNavigate } from "react-router-dom";
 import { NextButton } from "../styles/button";
-import { CloseOutlined } from "@ant-design/icons";
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import { useState } from "react";
+import useFetchServices from "../hooks/useFetchServices";
 
 const Services = () => {
   const navigate = useNavigate();
-  const services = [
-    {
-      i_1: {
-        count: 1,
-        name: "여성컷",
-        price: 35000,
-      },
-      i_2: {
-        count: 1,
-        name: "남성컷",
-        price: 30000,
-      },
-      i_3: {
-        count: 1,
-        name: "드라이",
-        price: 30000,
-      },
-      i_4: {
-        count: 1,
-        name: "기본펌",
-        price: 100000,
-      },
-    },
-  ];
+  const [selected, setSelected] = useState<string[]>([]);
+  const { items, loading } = useFetchServices(import.meta.env.VITE_COLAVO_DATA);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  const toggleSelection = (id: string) => {
+    if (selected.includes(id)) {
+      setSelected(selected.filter((selectedItem) => selectedItem !== id));
+    } else {
+      setSelected([...selected, id]);
+    }
+  };
 
   return (
     <Container>
       <Header>
         <CloseButton onClick={() => navigate(-1)}>
-          <CloseOutlined style={{ fontSize: "30px", color: theme.colors.gray300 }}/>
+          <CloseOutlined
+            style={{ fontSize: "30px", color: theme.colors.gray300 }}
+          />
         </CloseButton>
+        <Title>시술 메뉴</Title>
+        <div></div>
       </Header>
       <Main>
         <ServiceList>
-          {services.map((serviceGroup) =>
-            Object.entries(serviceGroup).map(([key, { name, price }]) => (
-              <ServiceItem key={key}>
-                <div>
-                  <ServiceName>{name}</ServiceName>
-                  <ServiceDetails>{price.toLocaleString()}원</ServiceDetails>
-                </div>
-                <Checkbox id={key} type="checkbox" />
-              </ServiceItem>
-            ))
-          )}
+          {Object.entries(items.items).map(([key, { name, price }]) => (
+            <ServiceItem key={key} onClick={() => toggleSelection(key)}>
+              <div>
+                <ServiceName>{name}</ServiceName>
+                <ServiceDetails>{price.toLocaleString()}원</ServiceDetails>
+              </div>
+              {selected.includes(key) && (
+                <CheckOutlined
+                  style={{ fontSize: "30px", color: theme.colors.purple200 }}
+                />
+              )}
+            </ServiceItem>
+          ))}
         </ServiceList>
       </Main>
       <Footer>
         <Message>서비스를 선택하세요. (여러개 선택 가능)</Message>
-        <NextButton onClick={() => navigate(-1)}>완료</NextButton>
+        <NextButton
+          onClick={() =>
+            navigate("/cart", { state: { selectedItems: selected } })
+          }
+        >
+          완료
+        </NextButton>
       </Footer>
     </Container>
   );
 };
 
 export default Services;
+
+const Title = styled.div`
+  font-size: 20px;
+`;
 
 const CloseButton = styled.div`
   cursor: pointer;
@@ -80,20 +88,14 @@ const ServiceItem = styled.div`
   border-bottom: 1px solid ${theme.colors.gray100};
 `;
 
-const ServiceName = styled.h3`
-  margin: 0;
-  font-size: 16px;
+const ServiceName = styled.div`
+  font-size: large;
 `;
 
 const ServiceDetails = styled.p`
   margin: 5px 0 0 0;
   color: ${theme.colors.gray300};
   font-size: 14px;
-`;
-
-const Checkbox = styled.input`
-  width: 20px;
-  height: 20px;
 `;
 
 const Message = styled.div`
