@@ -10,7 +10,6 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.div`
-  align-self: center;
   display: flex;
   align-items: center;
   justify-content: space-between;

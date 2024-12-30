@@ -2,6 +2,7 @@ import styled from "styled-components";
 import theme from "../styles/theme";
 import { Container, Header, Main, Footer } from "../styles/layout";
 import { useNavigate } from "react-router-dom";
+import { NextButton } from "../styles/button";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -76,14 +77,4 @@ const TotalLabel = styled.span`
 
 const TotalAmount = styled.span`
   font-size: x-large;
-`;
-
-const NextButton = styled.button`
-  width: 100%;
-  background-color: ${theme.colors.purple200};
-  color: white;
-  padding: 15px;
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
 `;
