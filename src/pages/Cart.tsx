@@ -1,8 +1,11 @@
 import styled from "styled-components";
 import theme from "../styles/theme";
 import { Container, Header, Main, Footer } from "../styles/layout";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+  const navigate = useNavigate();
+
   return (
     <Container>
       <Header>
@@ -10,8 +13,8 @@ const Cart = () => {
       </Header>
       <Main>
         <MenuContainer>
-          <MenuButton $menu="items">+ 시술 추가</MenuButton>
-          <MenuButton $menu="discounts">+ 할인 추가</MenuButton>
+          <MenuButton $menu="services" onClick={() => navigate("/services")}>+ 시술</MenuButton>
+          <MenuButton $menu="discounts" onClick={() => navigate("/discounts")}>+ 할인</MenuButton>
         </MenuContainer>
         {/* item */}
       </Main>
