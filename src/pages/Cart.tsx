@@ -3,10 +3,12 @@ import theme from "../styles/theme";
 import { Container, Header, Main, Footer } from "../styles/layout";
 import { useNavigate } from "react-router-dom";
 import { NextButton } from "../styles/button";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { PlusCircleOutlined, PlusSquareOutlined } from "@ant-design/icons";
+import useCart from "../hooks/useCart";
 
 const Cart = () => {
   const navigate = useNavigate();
+  const { cartItems } = useCart();
 
   return (
     <Container>
@@ -22,7 +24,24 @@ const Cart = () => {
             <PlusCircleOutlined /> 할인
           </MenuButton>
         </MenuContainer>
-        {/* item */}
+        <CartList>
+          {cartItems.length > 0 ? (
+            Object.entries(cartItems).map(([key, { name, price, count }]) => (
+              <Item key={key}>
+                <ItemTitle>
+                  <ItemName>{name}</ItemName>
+                  <Itemetails>{price.toLocaleString()}원</Itemetails>
+                </ItemTitle>
+                <CountButton>{count}</CountButton>
+              </Item>
+            ))
+          ) : (
+            <Message>
+              <PlusSquareOutlined style={{ fontSize: "30px" }} />
+              <h3>아이템을 선택하세요</h3>
+            </Message>
+          )}
+        </CartList>
       </Main>
       <Footer>
         <TotalRow>
@@ -66,6 +85,36 @@ const MenuButton = styled.button<{ $menu: string }>`
   cursor: pointer;
 `;
 
+const CartList = styled.div`
+  padding: 10px;
+`;
+
+const Item = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid ${theme.colors.gray100};
+`;
+
+const ItemTitle = styled.div`
+  max-width: 410px;
+`;
+
+const ItemName = styled.div`
+  font-size: large;
+`;
+
+const Itemetails = styled.p`
+  margin: 5px 0 0 0;
+  color: ${theme.colors.gray300};
+  font-size: 14px;
+`;
+
+const CountButton = styled.button`
+  border: none;
+`;
+
 const TotalRow = styled.div`
   display: flex;
   justify-content: space-between;
@@ -79,4 +128,15 @@ const TotalLabel = styled.span`
 
 const TotalAmount = styled.span`
   font-size: x-large;
+`;
+
+const Message = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #b6c3cb;
+  align-items: center;
 `;

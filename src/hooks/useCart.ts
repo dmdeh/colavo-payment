@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 export interface CartItem {
   id: string;
+  count: number;
   name: string;
   price: number;
   type: "services" | "discounts";

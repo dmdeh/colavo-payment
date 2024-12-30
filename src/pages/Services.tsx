@@ -36,7 +36,9 @@ const Services = () => {
     selected.forEach((id) => {
       const item = items[id];
       if (item) {
-        addToCart({ id, name: item.name, price: item.price, type: "services" });
+        addToCart({
+          id, name: item.name, price: item.price, type: "services", count: item.count
+        });
       }
     });
     navigate(-1);

@@ -25,4 +25,5 @@ export const Footer = styled.footer`
   align-content: center;
   height: 120px;
   position: sticky;
+  padding: 0 10px;
 `;
