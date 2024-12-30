@@ -6,10 +6,21 @@ interface ServiceItem {
   price: number;
 }
 
-type ServiceItems = Record<string, ServiceItem>;
+interface DiscountItem {
+  name: string;
+  rate: number;
+}
+
+interface ServiceResponse {
+  items?: Record<string, ServiceItem>;
+  discounts?: Record<string, DiscountItem>;
+}
 
 const useFetchServices = (url: string) => {
-  const [items, setItems] = useState<ServiceItems>({});
+  const [data, setData] = useState<ServiceResponse>({
+    items: {},
+    discounts: {},
+  });
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,7 +32,7 @@ const useFetchServices = (url: string) => {
           throw new Error("Failed to fetch services");
         }
         const data = await response.json();
-        setItems(data);
+        setData(data);
       } catch (error) {
         if (error instanceof Error) {
           setError(error.message);
@@ -36,7 +47,7 @@ const useFetchServices = (url: string) => {
     fetchServices();
   }, [url]);
 
-  return { items, loading, error };
+  return { items: data.items, discounts: data.discounts, loading, error };
 };
 
 export default useFetchServices;

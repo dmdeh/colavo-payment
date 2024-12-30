@@ -7,11 +7,13 @@ import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import useFetchServices from "../hooks/useFetchServices";
 import Loading from "../components/Loading/Loading";
+import useCart from "../hooks/useCart";
 
 const Services = () => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState<string[]>([]);
   const { items, loading } = useFetchServices(import.meta.env.VITE_COLAVO_DATA);
+  const { cartItems, addToCart } = useCart();
 
   if (loading) {
     return <Loading />;
@@ -24,6 +26,28 @@ const Services = () => {
       setSelected([...selected, id]);
     }
   };
+
+  const handleComplete = () => {
+    if (!items) {
+      console.error("아이템을 찾을 수 없습니다.");
+      return;
+    }
+
+    selected.forEach((id) => {
+      const item = items[id];
+      if (item) {
+        addToCart({ id, name: item.name, price: item.price, type: "services" });
+      }
+    });
+    navigate(-1);
+  };
+
+  if (!items) {
+    return <div>서비스 데이터를 불러오는 중입니다.</div>;
+  }
+  
+  const isChecked = (key: string) =>
+    selected.includes(key) || cartItems.some((item) => item.id === key);
 
   return (
     <Container>
@@ -38,30 +62,31 @@ const Services = () => {
       </Header>
       <Main>
         <ServiceList>
-          {Object.entries(items.items).map(([key, { name, price }]) => (
-            <ServiceItem key={key} onClick={() => toggleSelection(key)}>
-              <div>
-                <ServiceName>{name}</ServiceName>
-                <ServiceDetails>{price.toLocaleString()}원</ServiceDetails>
-              </div>
-              {selected.includes(key) && (
-                <CheckOutlined
-                  style={{ fontSize: "30px", color: theme.colors.purple200 }}
-                />
-              )}
-            </ServiceItem>
-          ))}
+          {Object.entries(items).map(([key, { name, price }]) => {
+            return (
+              <ServiceItem key={key} onClick={() => toggleSelection(key)}>
+                <ServiceTitle>
+                  <ServiceName>{name}</ServiceName>
+                  <ServiceDetails>{price.toLocaleString()}원</ServiceDetails>
+                </ServiceTitle>
+                <div>
+                  {isChecked(key) && (
+                    <CheckOutlined
+                      style={{
+                        fontSize: "30px",
+                        color: theme.colors.purple200,
+                      }}
+                    />
+                  )}
+                </div>
+              </ServiceItem>
+            );
+          })}
         </ServiceList>
       </Main>
       <Footer>
         <Message>서비스를 선택하세요. (여러개 선택 가능)</Message>
-        <NextButton
-          onClick={() =>
-            navigate("/cart", { state: { selectedItems: selected } })
-          }
-        >
-          완료
-        </NextButton>
+        <NextButton onClick={handleComplete}>완료</NextButton>
       </Footer>
     </Container>
   );
@@ -87,6 +112,10 @@ const ServiceItem = styled.div`
   align-items: center;
   padding: 15px 0;
   border-bottom: 1px solid ${theme.colors.gray100};
+`;
+
+const ServiceTitle = styled.div`
+  max-width: 410px;
 `;
 
 const ServiceName = styled.div`
