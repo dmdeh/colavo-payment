@@ -6,6 +6,7 @@ import { NextButton } from "../styles/button";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import useFetchServices from "../hooks/useFetchServices";
+import Loading from "../components/Loading/Loading";
 
 const Services = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const Services = () => {
   const { items, loading } = useFetchServices(import.meta.env.VITE_COLAVO_DATA);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const toggleSelection = (id: string) => {
