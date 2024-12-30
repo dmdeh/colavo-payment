@@ -3,6 +3,7 @@ import theme from "../styles/theme";
 import { Container, Header, Main, Footer } from "../styles/layout";
 import { useNavigate } from "react-router-dom";
 import { NextButton } from "../styles/button";
+import { CloseOutlined } from "@ant-design/icons";
 
 const Services = () => {
   const navigate = useNavigate();
@@ -34,7 +35,9 @@ const Services = () => {
   return (
     <Container>
       <Header>
-        <CloseButton onClick={() => navigate(-1)}>X</CloseButton>
+        <CloseButton onClick={() => navigate(-1)}>
+          <CloseOutlined style={{ fontSize: "30px", color: theme.colors.gray300 }}/>
+        </CloseButton>
       </Header>
       <Main>
         <ServiceList>
@@ -61,10 +64,8 @@ const Services = () => {
 
 export default Services;
 
-const CloseButton = styled.button`
-  background: none;
-  border: none;
-  padding: 0;
+const CloseButton = styled.div`
+  cursor: pointer;
 `;
 
 const ServiceList = styled.div`

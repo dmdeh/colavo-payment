@@ -3,6 +3,7 @@ import theme from "../styles/theme";
 import { Container, Header, Main, Footer } from "../styles/layout";
 import { useNavigate } from "react-router-dom";
 import { NextButton } from "../styles/button";
+import { PlusCircleOutlined } from "@ant-design/icons";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -14,8 +15,12 @@ const Cart = () => {
       </Header>
       <Main>
         <MenuContainer>
-          <MenuButton $menu="services" onClick={() => navigate("/services")}>+ 시술</MenuButton>
-          <MenuButton $menu="discounts" onClick={() => navigate("/discounts")}>+ 할인</MenuButton>
+          <MenuButton $menu="services" onClick={() => navigate("/services")}>
+            <PlusCircleOutlined /> 시술
+          </MenuButton>
+          <MenuButton $menu="discounts" onClick={() => navigate("/discounts")}>
+            <PlusCircleOutlined /> 할인
+          </MenuButton>
         </MenuContainer>
         {/* item */}
       </Main>
@@ -58,6 +63,9 @@ const MenuButton = styled.button<{ $menu: string }>`
   border-radius: 20px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
 `;
 
 const Total = styled.div`

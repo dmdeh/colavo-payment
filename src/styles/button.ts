@@ -10,4 +10,5 @@ export const NextButton = styled.button`
   border-radius: 10px;
   font-weight: 600;
   font-size: large;
+  cursor: pointer;
 `;
