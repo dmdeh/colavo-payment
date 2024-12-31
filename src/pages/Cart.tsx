@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { NextButton } from "../styles/button";
 import { PlusCircleOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import useCart from "../hooks/useCart";
+import CartItem from "../components/CartItem/CartItem";
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { cartItems } = useCart();
+  const { cartItems, removeFromCart, updateCount } = useCart();
 
   return (
     <Container>
@@ -26,14 +27,8 @@ const Cart = () => {
         </MenuContainer>
         <CartList>
           {cartItems.length > 0 ? (
-            Object.entries(cartItems).map(([key, { name, price, count }]) => (
-              <Item key={key}>
-                <ItemTitle>
-                  <ItemName>{name}</ItemName>
-                  <Itemetails>{price.toLocaleString()}원</Itemetails>
-                </ItemTitle>
-                <CountButton>{count}</CountButton>
-              </Item>
+            Object.entries(cartItems).map(([key, item]) => (
+              <CartItem key={key} item={item}></CartItem>
             ))
           ) : (
             <Message>
@@ -72,10 +67,10 @@ const MenuButton = styled.button<{ $menu: string }>`
   width: 100%;
   padding: 15px;
   font-size: 16px;
-  background-color: ${({ $menu: menu }) =>
-    menu === "discounts" ? theme.colors.pink100 : theme.colors.gray100};
-  color: ${({ $menu: menu }) =>
-    menu === "discounts" ? theme.colors.pink200 : theme.colors.gray300};
+  background-color: ${({ $menu }) =>
+    $menu === "discounts" ? theme.colors.pink100 : theme.colors.gray100};
+  color: ${({ $menu }) =>
+    $menu === "discounts" ? theme.colors.pink200 : theme.colors.gray300};
   border: none;
   border-radius: 20px;
   display: flex;
@@ -87,32 +82,6 @@ const MenuButton = styled.button<{ $menu: string }>`
 
 const CartList = styled.div`
   padding: 10px;
-`;
-
-const Item = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 0;
-  border-bottom: 1px solid ${theme.colors.gray100};
-`;
-
-const ItemTitle = styled.div`
-  max-width: 410px;
-`;
-
-const ItemName = styled.div`
-  font-size: large;
-`;
-
-const Itemetails = styled.p`
-  margin: 5px 0 0 0;
-  color: ${theme.colors.gray300};
-  font-size: 14px;
-`;
-
-const CountButton = styled.button`
-  border: none;
 `;
 
 const TotalRow = styled.div`

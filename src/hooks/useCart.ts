@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export interface CartItem {
+export interface CartItemType {
   id: string;
   count: number;
   name: string;
@@ -9,16 +9,17 @@ export interface CartItem {
 }
 
 const useCart = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+  const [cartItems, setCartItems] = useState<CartItemType[]>(() => {
     const storedCart = localStorage.getItem("cartItems");
     return storedCart ? JSON.parse(storedCart) : [];
   });
 
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    console.log("🚀 ~ useEffect ~:", cartItems);
   }, [cartItems]);
 
-  const addToCart = (item: CartItem) => {
+  const addToCart = (item: CartItemType) => {
     const itemExists = cartItems.some((cartItem) => cartItem.id === item.id);
 
     if (!itemExists) {

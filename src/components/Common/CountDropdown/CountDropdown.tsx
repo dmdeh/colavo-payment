@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { Button, Divider, Dropdown, Space } from "antd";
 import styled from "styled-components";
-import theme from "../../styles/theme";
+import theme from "../../../styles/theme";
 
 interface CountDropdownProps {
   children: React.ReactNode;

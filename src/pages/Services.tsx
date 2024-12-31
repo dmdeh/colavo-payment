@@ -6,7 +6,7 @@ import { NextButton } from "../styles/button";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import useFetchServices from "../hooks/useFetchServices";
-import Loading from "../components/Loading/Loading";
+import Loading from "../components/Common/Loading/Loading";
 import useCart from "../hooks/useCart";
 
 const Services = () => {
@@ -37,7 +37,11 @@ const Services = () => {
       const item = items[id];
       if (item) {
         addToCart({
-          id, name: item.name, price: item.price, type: "services", count: item.count
+          id,
+          name: item.name,
+          price: item.price,
+          type: "services",
+          count: item.count,
         });
       }
     });
@@ -47,7 +51,7 @@ const Services = () => {
   if (!items) {
     return <div>서비스 데이터를 불러오는 중입니다.</div>;
   }
-  
+
   const isChecked = (key: string) =>
     selected.includes(key) || cartItems.some((item) => item.id === key);
 
