@@ -30,7 +30,13 @@ const useCart = () => {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
-  return { cartItems, addToCart, removeFromCart };
+  const updateCount = (id: string, newCount: number) => {
+    setCartItems((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, count: newCount } : item))
+    );
+  };
+
+  return { cartItems, addToCart, removeFromCart, updateCount };
 };
 
 export default useCart;
