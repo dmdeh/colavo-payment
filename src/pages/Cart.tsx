@@ -4,13 +4,17 @@ import { Container, Header, Main, Footer } from "../styles/layout";
 import { useNavigate } from "react-router-dom";
 import { NextButton } from "../styles/button";
 import { PlusCircleOutlined, PlusSquareOutlined } from "@ant-design/icons";
-import useCart from "../hooks/useCart";
 import CartItem from "../components/CartItem/CartItem";
+import { useCartStore } from "../store/useCartStore";
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { cartItems, calculateTotalPrice } = useCart();
-  const totalAmount = calculateTotalPrice().toLocaleString();
+  const cartItems = useCartStore((state) => state.cartItems);
+
+  const totalAmount = cartItems
+    .reduce((total, item) => total + item.price * item.count, 0)
+    .toLocaleString();
+
   return (
     <Container>
       <Header>

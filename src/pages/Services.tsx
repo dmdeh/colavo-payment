@@ -7,13 +7,15 @@ import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import useFetchServices from "../hooks/useFetchServices";
 import Loading from "../components/Common/Loading/Loading";
-import useCart from "../hooks/useCart";
+import { useCartStore } from "../store/useCartStore";
 
 const Services = () => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState<string[]>([]);
   const { items, loading } = useFetchServices(import.meta.env.VITE_COLAVO_DATA);
-  const { cartItems, addToCart } = useCart();
+
+  const cartItems = useCartStore((state) => state.cartItems);
+  const addToCart = useCartStore((state) => state.addToCart);
 
   if (loading) {
     return <Loading />;

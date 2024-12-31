@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import CountDropdown from "../Common/CountDropdown/CountDropdown";
-import useCart, { CartItemType } from "../../hooks/useCart";
 import theme from "../../styles/theme";
+import { CartItemType, useCartStore } from "../../store/useCartStore";
 
 interface CartItemProps {
   item: CartItemType;
@@ -9,7 +9,11 @@ interface CartItemProps {
 
 const CartItem = ({ item }: CartItemProps) => {
   const { id, name, price, count } = item;
-  const { removeFromCart, updateCount } = useCart();
+
+  const updateCount = useCartStore((state) => state.updateCount);
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
+  
+  const handleComplete = (newCount: number) => updateCount(id, newCount);
 
   return (
     <Item>
@@ -20,7 +24,7 @@ const CartItem = ({ item }: CartItemProps) => {
       <CountDropdown
         title={name}
         delete={() => removeFromCart(id)}
-        complete={(newCount) => updateCount(id, newCount)}
+        complete={handleComplete}
       >
         {count}
       </CountDropdown>
