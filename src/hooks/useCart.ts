@@ -37,7 +37,16 @@ const useCart = () => {
     );
   };
 
-  return { cartItems, addToCart, removeFromCart, updateCount };
+  const calculateTotalPrice = () =>
+    cartItems.reduce((total, item) => total + item.price * item.count, 0);
+
+  return {
+    cartItems,
+    addToCart,
+    removeFromCart,
+    updateCount,
+    calculateTotalPrice,
+  };
 };
 
 export default useCart;

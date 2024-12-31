@@ -9,8 +9,8 @@ import CartItem from "../components/CartItem/CartItem";
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { cartItems, removeFromCart, updateCount } = useCart();
-
+  const { cartItems, calculateTotalPrice } = useCart();
+  const totalAmount = calculateTotalPrice().toLocaleString();
   return (
     <Container>
       <Header>
@@ -41,7 +41,7 @@ const Cart = () => {
       <Footer>
         <TotalRow>
           <TotalLabel>합계</TotalLabel>
-          <TotalAmount>0원</TotalAmount>
+          <TotalAmount>{totalAmount}원</TotalAmount>
         </TotalRow>
         <NextButton>다음</NextButton>
       </Footer>
