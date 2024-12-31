@@ -87,10 +87,19 @@ const CountDropdown = ({
       onOpenChange={setIsOpen}
       dropdownRender={() => dropdownContent}
     >
-      <Button type="text" size="small">
-        <Space>
-          {count}
-          <DownOutlined />
+      <Button
+        type="text"
+        style={{
+          backgroundColor: theme.colors.gray100,
+          borderRadius: "20px",
+          padding: "13px",
+        }}
+      >
+        <Space style={{ columnGap: "5px" }}>
+          <Count>{count}</Count>
+          <DownOutlined
+            style={{ fontSize: "10px", color: theme.colors.gray300 }}
+          />
         </Space>
       </Button>
     </Dropdown>
@@ -128,6 +137,7 @@ const ScrollItem = styled.div`
   }
   &:hover {
     background-color: ${theme.colors.gray100};
+    font-size: large;
   }
 `;
 
@@ -135,4 +145,8 @@ const ButtonBox = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
+`;
+
+const Count = styled.p`
+  color: ${theme.colors.gray300};
 `;
