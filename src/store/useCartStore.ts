@@ -1,12 +1,5 @@
 import { create } from "zustand";
-
-export interface CartItemType {
-  id: string;
-  count: number;
-  name: string;
-  price: number;
-  type: "services" | "discounts";
-}
+import { CartItemType } from "../types/CartType";
 
 interface CartStore {
   cartItems: CartItemType[];

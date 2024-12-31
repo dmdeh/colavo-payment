@@ -1,15 +1,5 @@
 import { useEffect, useState } from "react";
-
-interface ServiceItem {
-  count: number;
-  name: string;
-  price: number;
-}
-
-interface DiscountItem {
-  name: string;
-  rate: number;
-}
+import { DiscountItem, ServiceItem } from "../types/CartType";
 
 interface ServiceResponse {
   items?: Record<string, ServiceItem>;

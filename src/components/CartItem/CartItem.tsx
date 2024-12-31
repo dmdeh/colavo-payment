@@ -1,35 +1,39 @@
 import styled from "styled-components";
 import CountDropdown from "../Common/CountDropdown/CountDropdown";
 import theme from "../../styles/theme";
-import { CartItemType, useCartStore } from "../../store/useCartStore";
+import { useCartStore } from "../../store/useCartStore";
+import { CartItemType } from "../../types/CartType";
 
 interface CartItemProps {
   item: CartItemType;
 }
 
 const CartItem = ({ item }: CartItemProps) => {
-  const { id, name, price, count } = item;
+  const { id, name } = item;
 
   const updateCount = useCartStore((state) => state.updateCount);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
-  
-  const handleComplete = (newCount: number) => updateCount(id, newCount);
 
-  return (
-    <Item>
-      <ItemTitle>
-        <ItemName>{name}</ItemName>
-        <Itemetails>{price.toLocaleString()}원</Itemetails>
-      </ItemTitle>
-      <CountDropdown
-        title={name}
-        delete={() => removeFromCart(id)}
-        complete={handleComplete}
-      >
-        {count}
-      </CountDropdown>
-    </Item>
-  );
+  const handleComplete = (newCount: number) => updateCount(id, newCount);
+  if (item.type === "services") {
+    const { price, count } = item;
+
+    return (
+      <Item>
+        <ItemTitle>
+          <ItemName>{name}</ItemName>
+          <Itemetails>{price.toLocaleString()}원</Itemetails>
+        </ItemTitle>
+        <CountDropdown
+          title={name}
+          delete={() => removeFromCart(id)}
+          complete={handleComplete}
+        >
+          {count}
+        </CountDropdown>
+      </Item>
+    );
+  }
 };
 
 export default CartItem;

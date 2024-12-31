@@ -12,7 +12,12 @@ const Cart = () => {
   const cartItems = useCartStore((state) => state.cartItems);
 
   const totalAmount = cartItems
-    .reduce((total, item) => total + item.price * item.count, 0)
+    .reduce((total, item) => {
+      if ("count" in item) {
+        return total + item.price * item.count;
+      }
+      return total;
+    }, 0)
     .toLocaleString();
 
   return (
