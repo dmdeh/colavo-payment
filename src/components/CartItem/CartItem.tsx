@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import CountDropdown from "../Common/CountDropdown/CountDropdown";
+import DropdownMenu from "../Common/DropdownMenu/DropdownMenu";
 import theme from "../../styles/theme";
 import { useCartStore } from "../../store/useCartStore";
 import { CartItemType, ServiceItem } from "../../types/CartType";
@@ -25,14 +25,14 @@ const CartItem = ({ item, serviceItems }: CartItemProps) => {
           <ItemName>{name}</ItemName>
           <ItemDetails>{price.toLocaleString()}원</ItemDetails>
         </ItemTitle>
-        <CountDropdown
+        <DropdownMenu
           type="services"
           title={name}
           delete={() => removeFromCart(id)}
           complete={handleComplete}
         >
           {count}
-        </CountDropdown>
+        </DropdownMenu>
       </Item>
     );
   }
@@ -42,7 +42,7 @@ const CartItem = ({ item, serviceItems }: CartItemProps) => {
       <ItemTitle>
         <ItemName>{name}</ItemName>
       </ItemTitle>
-      <CountDropdown
+      <DropdownMenu
         type="discounts"
         title={name}
         delete={() => removeFromCart(id)}
@@ -50,7 +50,7 @@ const CartItem = ({ item, serviceItems }: CartItemProps) => {
         serviceItems={serviceItems}
       >
         수정
-      </CountDropdown>
+      </DropdownMenu>
     </Item>
   );
 };
