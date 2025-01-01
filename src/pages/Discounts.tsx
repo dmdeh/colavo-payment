@@ -19,6 +19,8 @@ const Discounts = () => {
   const cartItems = useCartStore((state) => state.cartItems);
   const addToCart = useCartStore((state) => state.addToCart);
 
+  let percentage = (rate: number) => Math.round(rate * 100);
+
   if (loading) {
     return <Loading />;
   }
@@ -76,7 +78,7 @@ const Discounts = () => {
               <ServiceItem key={key} onClick={() => toggleSelection(key)}>
                 <ServiceTitle>
                   <ServiceName>{name}</ServiceName>
-                  <ServiceDetails>{rate}%</ServiceDetails>
+                  <ServiceDetails>{percentage(rate)}%</ServiceDetails>
                 </ServiceTitle>
                 <div>
                   {isChecked(key) && (
@@ -134,7 +136,6 @@ const ServiceName = styled.div`
 const ServiceDetails = styled.p`
   margin: 5px 0 0 0;
   color: ${theme.colors.pink200};
-  font-size: 14px;
 `;
 
 const Message = styled.div`

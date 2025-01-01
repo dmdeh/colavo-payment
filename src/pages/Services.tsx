@@ -133,7 +133,6 @@ const ServiceName = styled.div`
 const ServiceDetails = styled.p`
   margin: 5px 0 0 0;
   color: ${theme.colors.gray300};
-  font-size: 14px;
 `;
 
 const Message = styled.div`

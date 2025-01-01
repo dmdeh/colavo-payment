@@ -6,10 +6,14 @@ import { NextButton } from "../styles/button";
 import { PlusCircleOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import CartItem from "../components/CartItem/CartItem";
 import { useCartStore } from "../store/useCartStore";
+import { ServiceItem } from "../types/CartType";
 
 const Cart = () => {
   const navigate = useNavigate();
   const cartItems = useCartStore((state) => state.cartItems);
+  const cartServiceItems = cartItems.filter(
+    (item): item is ServiceItem => item.type === "services"
+  );
 
   const totalAmount = cartItems
     .reduce((total, item) => {
@@ -37,7 +41,13 @@ const Cart = () => {
         <CartList>
           {cartItems.length > 0 ? (
             Object.entries(cartItems).map(([key, item]) => (
-              <CartItem key={key} item={item}></CartItem>
+              <CartItem
+                key={key}
+                item={item}
+                serviceItems={
+                  item.type === "discounts" ? cartServiceItems : undefined
+                }
+              />
             ))
           ) : (
             <Message>
