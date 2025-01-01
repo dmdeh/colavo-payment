@@ -8,6 +8,7 @@ import { useState } from "react";
 import useFetchServices from "../hooks/useFetchServices";
 import Loading from "../components/Common/Loading/Loading";
 import { useCartStore } from "../store/useCartStore";
+import { percentage } from "../utils/calculate";
 
 const Discounts = () => {
   const navigate = useNavigate();
@@ -18,8 +19,6 @@ const Discounts = () => {
 
   const cartItems = useCartStore((state) => state.cartItems);
   const addToCart = useCartStore((state) => state.addToCart);
-
-  let percentage = (rate: number) => Math.round(rate * 100);
 
   if (loading) {
     return <Loading />;
@@ -47,6 +46,7 @@ const Discounts = () => {
           name: discount.name,
           type: "discounts",
           rate: discount.rate,
+          selectedIds: discount.selectedIds,
         });
       }
     });
