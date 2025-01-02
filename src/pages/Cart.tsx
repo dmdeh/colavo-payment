@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import theme from "../styles/theme";
-import { Container, Header, Main, Footer } from "../styles/layout";
+import { Container, Header, Main, Footer, Message } from "../styles/layout";
 import { useNavigate } from "react-router-dom";
 import { NextButton } from "../styles/button";
 import { PlusCircleOutlined, PlusSquareOutlined } from "@ant-design/icons";
@@ -109,13 +109,3 @@ const TotalAmount = styled.span`
   font-size: x-large;
 `;
 
-const Message = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #b6c3cb;
-  align-items: center;
-`;

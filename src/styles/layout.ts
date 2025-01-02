@@ -27,3 +27,14 @@ export const Footer = styled.footer`
   position: sticky;
   padding: 0 10px;
 `;
+
+export const Message = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #b6c3cb;
+  align-items: center;
+`;

@@ -2,6 +2,7 @@ import { ServiceItem } from "../../../../types/CartType";
 import styled from "styled-components";
 import theme from "../../../../styles/theme";
 import { CheckOutlined } from "@ant-design/icons";
+import { Message } from "../../../../styles/layout";
 
 interface DiscountListProps {
   items: ServiceItem[];
@@ -11,23 +12,29 @@ interface DiscountListProps {
 
 const DiscountList = ({ items, selectedIds, onSelect }: DiscountListProps) => (
   <ScrollArea>
-    {items.map(({ id, name, price }) => (
-      <CartItem
-        key={id}
-        onClick={(e) => {
-          e.stopPropagation();
-          onSelect(id);
-        }}
-      >
-        <div>
-          <div>{name}</div>
-          <ItemPrice>{price.toLocaleString()}원</ItemPrice>
-        </div>
-        {selectedIds.includes(id) && (
-          <CheckOutlined style={{ color: theme.colors.purple200 }} />
-        )}
-      </CartItem>
-    ))}
+    {items.length > 0 ? (
+      items.map(({ id, name, price }) => (
+        <CartItem
+          key={id}
+          onClick={(e) => {
+            e.stopPropagation();
+            onSelect(id);
+          }}
+        >
+          <div>
+            <div>{name}</div>
+            <ItemPrice>{price.toLocaleString()}원</ItemPrice>
+          </div>
+          {selectedIds.includes(id) && (
+            <CheckOutlined style={{ color: theme.colors.purple200 }} />
+          )}
+        </CartItem>
+      ))
+    ) : (
+      <Message>
+        <h4>메뉴을 추가하세요</h4>
+      </Message>
+    )}
   </ScrollArea>
 );
 
