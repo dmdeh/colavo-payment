@@ -12,8 +12,11 @@ export const Container = styled.div`
 export const Header = styled.header`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 10px;
+  position: relative;
+  justify-content: center;
+  padding-bottom: 0;
+  height: 60px;
 `;
 
 export const Main = styled.main`

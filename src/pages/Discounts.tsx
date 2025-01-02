@@ -9,6 +9,7 @@ import useFetchServices from "../hooks/useFetchServices";
 import Loading from "../components/Common/Loading/Loading";
 import { useCartStore } from "../store/useCartStore";
 import { percentage } from "../utils/calculate";
+import { CloseButton, CloseIcon, DetailMessage, ListItem, Title } from "../styles/page";
 
 const Discounts = () => {
   const navigate = useNavigate();
@@ -60,23 +61,22 @@ const Discounts = () => {
   return (
     <Container>
       <Header>
-        <CloseButton onClick={() => navigate(-1)}>
-          <CloseOutlined
-            style={{ fontSize: "30px", color: theme.colors.gray300 }}
-          />
-        </CloseButton>
+        <CloseIcon>
+          <CloseButton onClick={() => navigate(-1)}>
+            <CloseOutlined style={{ fontSize: "30px" }} />
+          </CloseButton>
+        </CloseIcon>
         <Title>시술 메뉴</Title>
-        <div></div>
       </Header>
       <Main>
-        <ServiceList>
+        <DiscountList>
           {Object.entries(discounts).map(([key, { name, rate }]) => {
             return (
-              <ServiceItem key={key} onClick={() => toggleSelection(key)}>
-                <ServiceTitle>
-                  <ServiceName>{name}</ServiceName>
-                  <ServiceDetails>{percentage(rate)}%</ServiceDetails>
-                </ServiceTitle>
+              <ListItem key={key} onClick={() => toggleSelection(key)}>
+                <DiscountTitle>
+                  <DiscountName>{name}</DiscountName>
+                  <DiscountDetails>{percentage(rate)}%</DiscountDetails>
+                </DiscountTitle>
                 <div>
                   {isChecked(key) && (
                     <CheckOutlined
@@ -87,10 +87,10 @@ const Discounts = () => {
                     />
                   )}
                 </div>
-              </ServiceItem>
+              </ListItem>
             );
           })}
-        </ServiceList>
+        </DiscountList>
       </Main>
       <Footer>
         <DetailMessage>서비스를 선택하세요. (여러개 선택 가능)</DetailMessage>
@@ -102,41 +102,19 @@ const Discounts = () => {
 
 export default Discounts;
 
-const Title = styled.div`
-  font-size: 20px;
-`;
-
-const CloseButton = styled.div`
-  cursor: pointer;
-`;
-
-const ServiceList = styled.div`
+const DiscountList = styled.div`
   padding: 20px;
 `;
 
-const ServiceItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 0;
-  border-bottom: 1px solid ${theme.colors.gray100};
-`;
-
-const ServiceTitle = styled.div`
+const DiscountTitle = styled.div`
   max-width: 410px;
 `;
 
-const ServiceName = styled.div`
+const DiscountName = styled.div`
   font-size: large;
 `;
 
-const ServiceDetails = styled.p`
+const DiscountDetails = styled.p`
   margin: 5px 0 0 0;
   color: ${theme.colors.pink200};
-`;
-
-const DetailMessage = styled.div`
-  color: ${theme.colors.purple100};
-  margin-bottom: 10px;
-  text-align: center;
 `;

@@ -3,12 +3,18 @@ import theme from "../styles/theme";
 import { Container, Header, Main, Footer, Message } from "../styles/layout";
 import { useNavigate } from "react-router-dom";
 import { Button, NextButton } from "../styles/button";
-import { ShoppingCartOutlined, PlusCircleOutlined, PlusSquareOutlined } from "@ant-design/icons";
+import {
+  ShoppingCartOutlined,
+  PlusCircleOutlined,
+  PlusSquareOutlined,
+  CloseOutlined,
+} from "@ant-design/icons";
 import CartItem from "../components/CartItem/CartItem";
 import { useCartStore } from "../store/useCartStore";
 import filterCartItems from "../utils/filterCartItems.ts";
 import useFetchServices from "../hooks/useFetchServices.ts";
 import PriceFormatter from "../components/Common/PriceFormatter/PriceFormatter.tsx";
+import { CloseIcon } from "../styles/page.ts";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -19,10 +25,19 @@ const Cart = () => {
 
   return (
     <Container>
-      <CartHeader>
-        <ShoppingCartOutlined style={{ fontSize: "20px" }} />
-        <HeaderTitle>장바구니</HeaderTitle>
-      </CartHeader>
+      <Header>
+        <CloseIcon>
+          <CloseOutlined
+            style={{ fontSize: "30px", color: theme.colors.gray300 }}
+          />
+        </CloseIcon>
+        <TitleBox>
+          <div>
+            <ShoppingCartOutlined style={{ fontSize: "25px" }} />
+          </div>
+          <HeaderTitle>장바구니</HeaderTitle>
+        </TitleBox>
+      </Header>
       <Main>
         <MenuContainer>
           <MenuButton $menu="services" onClick={() => navigate("/services")}>
@@ -66,15 +81,15 @@ const Cart = () => {
 
 export default Cart;
 
-const CartHeader = styled(Header)`
-  gap: 10px;
-  justify-content: unset;
-  padding-bottom: 0;
-`;
-
 const HeaderTitle = styled.h1`
   font-size: 20px;
   font-weight: 600;
+`;
+
+const TitleBox = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
 `;
 
 const MenuContainer = styled.div`

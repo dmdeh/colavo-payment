@@ -8,6 +8,7 @@ import { useState } from "react";
 import useFetchServices from "../hooks/useFetchServices";
 import Loading from "../components/Common/Loading/Loading";
 import { useCartStore } from "../store/useCartStore";
+import { CloseButton, CloseIcon, DetailMessage, ListItem, Title } from "../styles/page";
 
 const Services = () => {
   const navigate = useNavigate();
@@ -52,19 +53,18 @@ const Services = () => {
   return (
     <Container>
       <Header>
-        <CloseButton onClick={() => navigate(-1)}>
-          <CloseOutlined
-            style={{ fontSize: "30px", color: theme.colors.gray300 }}
-          />
-        </CloseButton>
+        <CloseIcon>
+          <CloseButton onClick={() => navigate(-1)}>
+            <CloseOutlined style={{ fontSize: "30px" }} />
+          </CloseButton>
+        </CloseIcon>
         <Title>시술 메뉴</Title>
-        <div></div>
       </Header>
       <Main>
         <ServiceList>
           {Object.entries(items).map(([key, { name, price }]) => {
             return (
-              <ServiceItem key={key} onClick={() => toggleSelection(key)}>
+              <ListItem key={key} onClick={() => toggleSelection(key)}>
                 <ServiceTitle>
                   <ServiceName>{name}</ServiceName>
                   <ServiceDetails>{price.toLocaleString()}원</ServiceDetails>
@@ -79,7 +79,7 @@ const Services = () => {
                     />
                   )}
                 </div>
-              </ServiceItem>
+              </ListItem>
             );
           })}
         </ServiceList>
@@ -94,24 +94,8 @@ const Services = () => {
 
 export default Services;
 
-const Title = styled.div`
-  font-size: 20px;
-`;
-
-const CloseButton = styled.div`
-  cursor: pointer;
-`;
-
 const ServiceList = styled.div`
   padding: 20px;
-`;
-
-const ServiceItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 0;
-  border-bottom: 1px solid ${theme.colors.gray100};
 `;
 
 const ServiceTitle = styled.div`
@@ -125,10 +109,4 @@ const ServiceName = styled.div`
 const ServiceDetails = styled.p`
   margin: 5px 0 0 0;
   color: ${theme.colors.gray300};
-`;
-
-const DetailMessage = styled.div`
-  color: ${theme.colors.purple100};
-  margin-bottom: 10px;
-  text-align: center;
 `;
