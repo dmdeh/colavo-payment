@@ -39,7 +39,7 @@ const DropdownMenu = ({
     if (type === "discounts") {
       setSelectedServices(serviceItems.map((item) => item.id));
     }
-  }, [type, serviceItems]);
+  }, [type]);
 
   const handleMenuClick = (newCount: number) => setCount(newCount);
 
