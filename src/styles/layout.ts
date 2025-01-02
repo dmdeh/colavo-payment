@@ -9,10 +9,14 @@ export const Container = styled.div`
   margin: 0 auto;
 `;
 
-export const Header = styled.div`
+export const Header = styled.header`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  padding: 10px;
+  position: relative;
+  justify-content: center;
+  padding-bottom: 0;
+  height: 60px;
 `;
 
 export const Main = styled.main`
@@ -23,7 +27,18 @@ export const Main = styled.main`
 export const Footer = styled.footer`
   border-top: 1px solid ${theme.colors.gray200};
   align-content: center;
-  height: 120px;
+  height: 140px;
   position: sticky;
   padding: 0 10px;
+`;
+
+export const Message = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #b6c3cb;
+  align-items: center;
 `;

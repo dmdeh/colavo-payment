@@ -1,38 +1,64 @@
 import styled from "styled-components";
 import theme from "../styles/theme";
-import { Container, Header, Main, Footer } from "../styles/layout";
+import { Container, Header, Main, Footer, Message } from "../styles/layout";
 import { useNavigate } from "react-router-dom";
-import { NextButton } from "../styles/button";
-import { PlusCircleOutlined, PlusSquareOutlined } from "@ant-design/icons";
+import { Button, NextButton } from "../styles/button";
+import {
+  ShoppingCartOutlined,
+  PlusCircleOutlined,
+  PlusSquareOutlined,
+  CloseOutlined,
+} from "@ant-design/icons";
 import CartItem from "../components/CartItem/CartItem";
 import { useCartStore } from "../store/useCartStore";
+import filterCartItems from "../utils/filterCartItems.ts";
+import useFetchServices from "../hooks/useFetchServices.ts";
+import PriceFormatter from "../components/Common/PriceFormatter/PriceFormatter.tsx";
+import { CloseIcon } from "../styles/page.ts";
 
 const Cart = () => {
   const navigate = useNavigate();
   const cartItems = useCartStore((state) => state.cartItems);
+  const getTotal = useCartStore((state) => state.getTotal);
 
-  const totalAmount = cartItems
-    .reduce((total, item) => total + item.price * item.count, 0)
-    .toLocaleString();
+  const { currencyCode } = useFetchServices(import.meta.env.VITE_COLAVO_DATA);
 
   return (
     <Container>
       <Header>
-        <HeaderTitle>장바구니</HeaderTitle>
+        <CloseIcon>
+          <CloseOutlined
+            style={{ fontSize: "30px", color: theme.colors.gray300 }}
+          />
+        </CloseIcon>
+        <TitleBox>
+          <div>
+            <ShoppingCartOutlined style={{ fontSize: "25px" }} />
+          </div>
+          <HeaderTitle>장바구니</HeaderTitle>
+        </TitleBox>
       </Header>
       <Main>
         <MenuContainer>
           <MenuButton $menu="services" onClick={() => navigate("/services")}>
-            <PlusCircleOutlined /> 시술
+            <PlusCircleOutlined /> <span>시술</span>
           </MenuButton>
           <MenuButton $menu="discounts" onClick={() => navigate("/discounts")}>
-            <PlusCircleOutlined /> 할인
+            <PlusCircleOutlined /> <span>할인</span>
           </MenuButton>
         </MenuContainer>
         <CartList>
           {cartItems.length > 0 ? (
             Object.entries(cartItems).map(([key, item]) => (
-              <CartItem key={key} item={item}></CartItem>
+              <CartItem
+                key={key}
+                item={item}
+                serviceItems={
+                  item.type === "discounts"
+                    ? filterCartItems(cartItems, "services")
+                    : undefined
+                }
+              />
             ))
           ) : (
             <Message>
@@ -45,7 +71,7 @@ const Cart = () => {
       <Footer>
         <TotalRow>
           <TotalLabel>합계</TotalLabel>
-          <TotalAmount>{totalAmount}원</TotalAmount>
+          <PriceFormatter amount={getTotal()} currencyCode={currencyCode} />
         </TotalRow>
         <NextButton>다음</NextButton>
       </Footer>
@@ -56,8 +82,14 @@ const Cart = () => {
 export default Cart;
 
 const HeaderTitle = styled.h1`
-  font-size: 1.125rem;
+  font-size: 20px;
   font-weight: 600;
+`;
+
+const TitleBox = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
 `;
 
 const MenuContainer = styled.div`
@@ -67,21 +99,17 @@ const MenuContainer = styled.div`
   border-bottom: 1px dashed ${theme.colors.gray200};
 `;
 
-const MenuButton = styled.button<{ $menu: string }>`
-  width: 100%;
-  padding: 15px;
-  font-size: 16px;
+const MenuButton = styled(Button)<{ $menu: string }>`
   background-color: ${({ $menu }) =>
     $menu === "discounts" ? theme.colors.pink100 : theme.colors.gray100};
   color: ${({ $menu }) =>
     $menu === "discounts" ? theme.colors.pink200 : theme.colors.gray300};
-  border: none;
-  border-radius: 20px;
+  border-radius: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  cursor: pointer;
+  font-size: 18px;
 `;
 
 const CartList = styled.div`
@@ -92,24 +120,9 @@ const TotalRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
 `;
 
 const TotalLabel = styled.span`
   color: ${theme.colors.gray300};
-`;
-
-const TotalAmount = styled.span`
-  font-size: x-large;
-`;
-
-const Message = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #b6c3cb;
-  align-items: center;
+  font-size: 18px;
 `;

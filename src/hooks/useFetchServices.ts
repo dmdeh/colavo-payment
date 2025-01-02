@@ -1,25 +1,18 @@
 import { useEffect, useState } from "react";
-
-interface ServiceItem {
-  count: number;
-  name: string;
-  price: number;
-}
-
-interface DiscountItem {
-  name: string;
-  rate: number;
-}
+import { DiscountItem, ServiceItem } from "../types/CartType";
+import { CurrencyCode } from "../components/Common/PriceFormatter/PriceFormatter";
 
 interface ServiceResponse {
-  items?: Record<string, ServiceItem>;
-  discounts?: Record<string, DiscountItem>;
+  items: Record<string, ServiceItem>;
+  discounts: Record<string, DiscountItem>;
+  currency_code: CurrencyCode;
 }
 
 const useFetchServices = (url: string) => {
   const [data, setData] = useState<ServiceResponse>({
     items: {},
     discounts: {},
+    currency_code: "KRW",
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -47,7 +40,13 @@ const useFetchServices = (url: string) => {
     fetchServices();
   }, [url]);
 
-  return { items: data.items, discounts: data.discounts, loading, error };
+  return {
+    items: data.items,
+    discounts: data.discounts,
+    currencyCode: data.currency_code,
+    loading,
+    error,
+  };
 };
 
 export default useFetchServices;

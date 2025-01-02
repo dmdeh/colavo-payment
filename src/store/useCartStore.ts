@@ -1,18 +1,14 @@
 import { create } from "zustand";
-
-export interface CartItemType {
-  id: string;
-  count: number;
-  name: string;
-  price: number;
-  type: "services" | "discounts";
-}
+import { CartItemType } from "../types/CartType";
+import { calculateTotal } from "../utils/calculate";
 
 interface CartStore {
   cartItems: CartItemType[];
   addToCart: (item: CartItemType) => void;
   removeFromCart: (id: string) => void;
   updateCount: (id: string, newCount: number) => void;
+  updateSelectedIds: (id: string, selectedIds: string[]) => void;
+  getTotal: () => number;
 }
 
 const saveCartItems = (cartItems: CartItemType[]) => {
@@ -23,7 +19,7 @@ const saveCartItems = (cartItems: CartItemType[]) => {
   }
 };
 
-export const useCartStore = create<CartStore>((set) => ({
+export const useCartStore = create<CartStore>((set, get) => ({
   cartItems: JSON.parse(localStorage.getItem("cartItems") || "[]"),
 
   addToCart: (item) =>
@@ -33,7 +29,6 @@ export const useCartStore = create<CartStore>((set) => ({
       );
       if (!itemExists) {
         const newCart = [...state.cartItems, item];
-        saveCartItems(newCart);
         return { cartItems: newCart };
       }
       return state;
@@ -42,7 +37,6 @@ export const useCartStore = create<CartStore>((set) => ({
   removeFromCart: (id) =>
     set((state) => {
       const newCart = state.cartItems.filter((item) => item.id !== id);
-      saveCartItems(newCart);
       return { cartItems: newCart };
     }),
 
@@ -51,7 +45,22 @@ export const useCartStore = create<CartStore>((set) => ({
       const newCart = state.cartItems.map((item) =>
         item.id === id ? { ...item, count: newCount } : item
       );
-      saveCartItems(newCart);
       return { cartItems: newCart };
     }),
+
+  updateSelectedIds: (id, selectedIds) =>
+    set((state) => {
+      const newCart = state.cartItems.map((item) =>
+        item.id === id && item.type === "discounts"
+          ? { ...item, selectedIds }
+          : item
+      );
+      return { cartItems: newCart };
+    }),
+
+  getTotal: () => calculateTotal(get().cartItems),
 }));
+
+useCartStore.subscribe((state) => {
+  saveCartItems(state.cartItems);
+});
