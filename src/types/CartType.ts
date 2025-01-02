@@ -11,9 +11,14 @@ export interface DiscountItem {
   name: string;
   rate: number;
   type: "discounts";
+  selectedIds: string[]; 
 }
 
 export type CartItemType = ServiceItem | DiscountItem;
+
+export interface CartDiscountItem extends DiscountItem {
+  selectedIds: string[];
+}
 
 export interface ServiceResponse {
   items: Record<string, CartItemType>;

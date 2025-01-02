@@ -19,6 +19,10 @@ const Discounts = () => {
 
   const cartItems = useCartStore((state) => state.cartItems);
   const addToCart = useCartStore((state) => state.addToCart);
+  const updateSelectedIds = useCartStore((state) => state.updateSelectedIds);
+
+  const getServiceItemIds = () =>
+    cartItems.filter((item) => item.type === "services").map((item) => item.id);
 
   if (loading) {
     return <Loading />;
@@ -48,6 +52,7 @@ const Discounts = () => {
           rate: discount.rate,
           selectedIds: discount.selectedIds,
         });
+        updateSelectedIds(id, getServiceItemIds());
       }
     });
     navigate(-1);

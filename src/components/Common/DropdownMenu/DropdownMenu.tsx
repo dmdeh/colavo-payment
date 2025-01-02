@@ -13,6 +13,7 @@ interface DropdownMenuProps {
   delete: () => void;
   complete: (count: number) => void;
   serviceItems?: ServiceItem[];
+  completeDiscount?: (selectedIds: string[]) => void;
 }
 
 const DropdownMenu = ({
@@ -22,11 +23,11 @@ const DropdownMenu = ({
   delete: handleDelete,
   complete,
   serviceItems = [],
+  completeDiscount,
 }: DropdownMenuProps) => {
   const [count, setCount] = useState(Number(children));
   const [isOpen, setIsOpen] = useState(false);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
-  console.log("🚀 ~ selectedServices:", selectedServices);
 
   useEffect(() => {
     if (type === "services") {
@@ -35,7 +36,7 @@ const DropdownMenu = ({
   }, [children, type]);
 
   useEffect(() => {
-    if (type === "discounts" && serviceItems.length > 0) {
+    if (type === "discounts") {
       setSelectedServices(serviceItems.map((item) => item.id));
     }
   }, [type, serviceItems]);
@@ -44,21 +45,20 @@ const DropdownMenu = ({
 
   const handleServiceSelect = (serviceId: string) => {
     if (selectedServices.includes(serviceId)) {
-      setSelectedServices(selectedServices.filter((id) => id !== serviceId));
+      setSelectedServices((prev) => prev.filter((id) => id !== serviceId));
     } else {
-      setSelectedServices([...selectedServices, serviceId]);
+      setSelectedServices((prev) => [...prev, serviceId]);
     }
   };
 
   const handleCompleteClick = () => {
     if (type === "services") {
       complete(count);
+    } else if (completeDiscount) {
+      completeDiscount(selectedServices);
     }
     setIsOpen(false);
   };
-
-  const isChecked = (id: string) => selectedServices.includes(id);
-  console.log("🚀 ~ isChecked:", isChecked);
 
   const renderContent = () => (
     <DropdownContainer>

@@ -3,6 +3,7 @@ import DropdownMenu from "../Common/DropdownMenu/DropdownMenu";
 import theme from "../../styles/theme";
 import { useCartStore } from "../../store/useCartStore";
 import { CartItemType, ServiceItem } from "../../types/CartType";
+import { percentage } from "../../utils/calculate";
 
 interface CartItemProps {
   item: CartItemType;
@@ -14,8 +15,28 @@ const CartItem = ({ item, serviceItems }: CartItemProps) => {
 
   const updateCount = useCartStore((state) => state.updateCount);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const updateSelectedIds = useCartStore((state) => state.updateSelectedIds);
 
   const handleComplete = (newCount: number) => updateCount(id, newCount);
+  const handleCompleteDiscount = (selectedIds: string[]) =>
+    updateSelectedIds(id, selectedIds);
+
+  const getSelectedItems = (selectedIds: string[], rate: number) => {
+    if (!serviceItems) return { ItemNames: [], totalDiscount: 0 };
+
+    const selectedItems = serviceItems.filter(({ id }) =>
+      selectedIds.includes(id)
+    );
+
+    const totalPrice = selectedItems.reduce((sum, { price }) => sum + price, 0);
+    const selectedNames = selectedItems.map(({ name }) => name);
+
+    return {
+      itemNames: selectedNames,
+      totalDiscount: totalPrice * rate,
+    };
+  };
+
   if (type === "services") {
     const { price, count } = item;
 
@@ -37,16 +58,35 @@ const CartItem = ({ item, serviceItems }: CartItemProps) => {
     );
   }
 
+  const { selectedIds = [], rate } = item;
+  const { itemNames, totalDiscount } = getSelectedItems(selectedIds, rate);
+
+  if (!itemNames) {
+    console.error("할인된 아이템을 찾을 수 없습니다.");
+    return;
+  }
+
   return (
     <Item>
       <ItemTitle>
         <ItemName>{name}</ItemName>
+        {itemNames.length > 0 ? (
+          <>
+            <ItemDetails>{itemNames.join(", ")}</ItemDetails>
+            <Discount>
+              -{totalDiscount.toLocaleString()}원 ({percentage(rate)}%)
+            </Discount>
+          </>
+        ) : (
+          <ItemDetails>선택된 항목이 없습니다</ItemDetails>
+        )}
       </ItemTitle>
       <DropdownMenu
         type="discounts"
         title={name}
         delete={() => removeFromCart(id)}
         complete={handleComplete}
+        completeDiscount={handleCompleteDiscount}
         serviceItems={serviceItems}
       >
         수정
@@ -76,5 +116,8 @@ const ItemName = styled.div`
 const ItemDetails = styled.p`
   margin: 5px 0 0 0;
   color: ${theme.colors.gray300};
-  font-size: 14px;
+`;
+
+const Discount = styled(ItemDetails)`
+  color: ${theme.colors.pink200};
 `;

@@ -6,6 +6,7 @@ interface CartStore {
   addToCart: (item: CartItemType) => void;
   removeFromCart: (id: string) => void;
   updateCount: (id: string, newCount: number) => void;
+  updateSelectedIds: (id: string, selectedIds: string[]) => void;
 }
 
 const saveCartItems = (cartItems: CartItemType[]) => {
@@ -43,6 +44,16 @@ export const useCartStore = create<CartStore>((set) => ({
     set((state) => {
       const newCart = state.cartItems.map((item) =>
         item.id === id ? { ...item, count: newCount } : item
+      );
+      saveCartItems(newCart);
+      return { cartItems: newCart };
+    }),
+  updateSelectedIds: (id, selectedIds) =>
+    set((state) => {
+      const newCart = state.cartItems.map((item) =>
+        item.id === id && item.type === "discounts"
+          ? { ...item, selectedIds }
+          : item
       );
       saveCartItems(newCart);
       return { cartItems: newCart };
