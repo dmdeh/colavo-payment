@@ -74,7 +74,7 @@ const DropdownMenu = ({
           onSelect={handleServiceSelect}
         />
       )}
-      <Divider style={{ margin: "0 0 8px 0" }} />
+      <Divider style={{ margin: "8px 0 0  0" }} />
       <ButtonGroup
         onDelete={() => {
           handleDelete();
@@ -93,21 +93,14 @@ const DropdownMenu = ({
       onOpenChange={setIsOpen}
       dropdownRender={renderContent}
     >
-      <Button
-        type="text"
-        style={{
-          backgroundColor: theme.colors.gray100,
-          borderRadius: "20px",
-          padding: "13px",
-        }}
-      >
+      <AntdButton type="text">
         <Space style={{ columnGap: "5px" }}>
           <ButtonTitle>{type === "services" ? count : "수정"}</ButtonTitle>
           <DownOutlined
             style={{ fontSize: "10px", color: theme.colors.gray300 }}
           />
         </Space>
-      </Button>
+      </AntdButton>
     </Dropdown>
   );
 };
@@ -125,6 +118,12 @@ const DropdownContainer = styled.div`
 
 const Title = styled.div`
   padding: 5px;
+`;
+
+const AntdButton = styled(Button)`
+  background-color: ${theme.colors.gray100};
+  border-radius: 20px;
+  padding: 13px;
 `;
 
 const ButtonTitle = styled.p`

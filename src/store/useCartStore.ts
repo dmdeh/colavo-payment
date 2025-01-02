@@ -29,7 +29,6 @@ export const useCartStore = create<CartStore>((set, get) => ({
       );
       if (!itemExists) {
         const newCart = [...state.cartItems, item];
-        saveCartItems(newCart);
         return { cartItems: newCart };
       }
       return state;
@@ -38,7 +37,6 @@ export const useCartStore = create<CartStore>((set, get) => ({
   removeFromCart: (id) =>
     set((state) => {
       const newCart = state.cartItems.filter((item) => item.id !== id);
-      saveCartItems(newCart);
       return { cartItems: newCart };
     }),
 
@@ -47,9 +45,9 @@ export const useCartStore = create<CartStore>((set, get) => ({
       const newCart = state.cartItems.map((item) =>
         item.id === id ? { ...item, count: newCount } : item
       );
-      saveCartItems(newCart);
       return { cartItems: newCart };
     }),
+
   updateSelectedIds: (id, selectedIds) =>
     set((state) => {
       const newCart = state.cartItems.map((item) =>
@@ -57,11 +55,12 @@ export const useCartStore = create<CartStore>((set, get) => ({
           ? { ...item, selectedIds }
           : item
       );
-      saveCartItems(newCart);
       return { cartItems: newCart };
     }),
 
-  getTotal: () => {
-    return calculateTotal(get().cartItems);
-  },
+  getTotal: () => calculateTotal(get().cartItems),
 }));
+
+useCartStore.subscribe((state) => {
+  saveCartItems(state.cartItems);
+});
