@@ -9,7 +9,11 @@ $ npm install
 $ npm run dev
 ```
 
-브라우저에서 http://localhost:5173/ 로 접속해주세요
+브라우저에서 http://localhost:5173/ 로 접속해주세요.
+
+## 🖥️ 실행화면
+
+<img width="70%" alt="콜라보과제" src="https://github.com/user-attachments/assets/16a71a57-c6c4-4fa6-8425-6fe89e8f9d23" />
 
 ## 📂 폴더 구조
 
@@ -38,7 +42,7 @@ $ npm run dev
 - **Styling**: Styled-components
 - **UI Library**: Ant Design (antd)
 
-## 🛠️ 트러블슈팅 및 고민했던 점
+## ⛏️ 트러블슈팅 및 고민했던 점
 
 ```
 할인 항목을 장바구니에 추가하면 장바구니 아이템들이 전체 선택으로 할인 적용이 되고,
