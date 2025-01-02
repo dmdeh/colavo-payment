@@ -2,8 +2,8 @@ import styled from "styled-components";
 import theme from "../styles/theme";
 import { Container, Header, Main, Footer, Message } from "../styles/layout";
 import { useNavigate } from "react-router-dom";
-import { NextButton } from "../styles/button";
-import { PlusCircleOutlined, PlusSquareOutlined } from "@ant-design/icons";
+import { Button, NextButton } from "../styles/button";
+import { ShoppingCartOutlined, PlusCircleOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import CartItem from "../components/CartItem/CartItem";
 import { useCartStore } from "../store/useCartStore";
 import filterCartItems from "../utils/filterCartItems.ts";
@@ -19,16 +19,17 @@ const Cart = () => {
 
   return (
     <Container>
-      <Header>
+      <CartHeader>
+        <ShoppingCartOutlined style={{ fontSize: "20px" }} />
         <HeaderTitle>장바구니</HeaderTitle>
-      </Header>
+      </CartHeader>
       <Main>
         <MenuContainer>
           <MenuButton $menu="services" onClick={() => navigate("/services")}>
-            <PlusCircleOutlined /> 시술
+            <PlusCircleOutlined /> <span>시술</span>
           </MenuButton>
           <MenuButton $menu="discounts" onClick={() => navigate("/discounts")}>
-            <PlusCircleOutlined /> 할인
+            <PlusCircleOutlined /> <span>할인</span>
           </MenuButton>
         </MenuContainer>
         <CartList>
@@ -65,8 +66,14 @@ const Cart = () => {
 
 export default Cart;
 
+const CartHeader = styled(Header)`
+  gap: 10px;
+  justify-content: unset;
+  padding-bottom: 0;
+`;
+
 const HeaderTitle = styled.h1`
-  font-size: 1.125rem;
+  font-size: 20px;
   font-weight: 600;
 `;
 
@@ -77,21 +84,17 @@ const MenuContainer = styled.div`
   border-bottom: 1px dashed ${theme.colors.gray200};
 `;
 
-const MenuButton = styled.button<{ $menu: string }>`
-  width: 100%;
-  padding: 15px;
-  font-size: 16px;
+const MenuButton = styled(Button)<{ $menu: string }>`
   background-color: ${({ $menu }) =>
     $menu === "discounts" ? theme.colors.pink100 : theme.colors.gray100};
   color: ${({ $menu }) =>
     $menu === "discounts" ? theme.colors.pink200 : theme.colors.gray300};
-  border: none;
-  border-radius: 20px;
+  border-radius: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  cursor: pointer;
+  font-size: 18px;
 `;
 
 const CartList = styled.div`
@@ -107,4 +110,5 @@ const TotalRow = styled.div`
 
 const TotalLabel = styled.span`
   color: ${theme.colors.gray300};
+  font-size: 18px;
 `;

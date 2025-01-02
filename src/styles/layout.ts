@@ -9,10 +9,11 @@ export const Container = styled.div`
   margin: 0 auto;
 `;
 
-export const Header = styled.div`
+export const Header = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 10px;
 `;
 
 export const Main = styled.main`
@@ -23,7 +24,7 @@ export const Main = styled.main`
 export const Footer = styled.footer`
   border-top: 1px solid ${theme.colors.gray200};
   align-content: center;
-  height: 120px;
+  height: 140px;
   position: sticky;
   padding: 0 10px;
 `;

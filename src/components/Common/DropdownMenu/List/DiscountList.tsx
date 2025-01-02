@@ -46,7 +46,7 @@ const ScrollArea = styled.div`
 `;
 
 const CartItem = styled.div`
-  padding: 8px;
+  padding: 8px 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -59,5 +59,4 @@ const CartItem = styled.div`
 const ItemPrice = styled.p`
   margin: 5px 0 0 0;
   color: ${theme.colors.gray300};
-  font-size: 14px;
 `;
