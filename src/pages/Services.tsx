@@ -17,8 +17,9 @@ const Services = () => {
   const cartItems = useCartStore((state) => state.cartItems);
   const addToCart = useCartStore((state) => state.addToCart);
 
-  if (loading) {
-    return <Loading />;
+  if (loading) return <Loading />;
+  if (!items) {
+    return <div>서비스 데이터를 불러오는 중입니다.</div>;
   }
 
   const toggleSelection = (id: string) => {
@@ -30,11 +31,6 @@ const Services = () => {
   };
 
   const handleComplete = () => {
-    if (!items) {
-      console.error("아이템을 찾을 수 없습니다.");
-      return;
-    }
-
     selected.forEach((id) => {
       const item = items[id];
       if (item) {
@@ -50,12 +46,7 @@ const Services = () => {
     navigate(-1);
   };
 
-  if (!items) {
-    return <div>서비스 데이터를 불러오는 중입니다.</div>;
-  }
-
-  const isChecked = (key: string) =>
-    selected.includes(key) || cartItems.some((item) => item.id === key);
+  const isChecked = (key: string) => selected.includes(key);
 
   return (
     <Container>
@@ -93,7 +84,7 @@ const Services = () => {
         </ServiceList>
       </Main>
       <Footer>
-        <Message>서비스를 선택하세요. (여러개 선택 가능)</Message>
+        <DetailMessage>서비스를 선택하세요. (여러개 선택 가능)</DetailMessage>
         <NextButton onClick={handleComplete}>완료</NextButton>
       </Footer>
     </Container>
@@ -135,7 +126,8 @@ const ServiceDetails = styled.p`
   color: ${theme.colors.gray300};
 `;
 
-const Message = styled.div`
+const DetailMessage = styled.div`
   color: ${theme.colors.purple100};
   margin-bottom: 10px;
+  text-align: center;
 `;

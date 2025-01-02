@@ -24,8 +24,9 @@ const Discounts = () => {
   const getServiceItemIds = () =>
     cartItems.filter((item) => item.type === "services").map((item) => item.id);
 
-  if (loading) {
-    return <Loading />;
+  if (loading) return <Loading />;
+  if (!discounts) {
+    return <div>할인 데이터를 불러오는 중입니다.</div>;
   }
 
   const toggleSelection = (id: string) => {
@@ -37,11 +38,6 @@ const Discounts = () => {
   };
 
   const handleComplete = () => {
-    if (!discounts) {
-      console.error("할인 아이템을 찾을 수 없습니다.");
-      return;
-    }
-
     selected.forEach((id) => {
       const discount = discounts[id];
       if (discount) {
@@ -58,12 +54,7 @@ const Discounts = () => {
     navigate(-1);
   };
 
-  if (!discounts) {
-    return <div>할인 데이터를 불러오는 중입니다.</div>;
-  }
-
-  const isChecked = (key: string) =>
-    selected.includes(key) || cartItems.some((item) => item.id === key);
+  const isChecked = (key: string) => selected.includes(key);
 
   return (
     <Container>
@@ -101,7 +92,7 @@ const Discounts = () => {
         </ServiceList>
       </Main>
       <Footer>
-        <Message>서비스를 선택하세요. (여러개 선택 가능)</Message>
+        <DetailMessage>서비스를 선택하세요. (여러개 선택 가능)</DetailMessage>
         <NextButton onClick={handleComplete}>완료</NextButton>
       </Footer>
     </Container>
@@ -143,7 +134,8 @@ const ServiceDetails = styled.p`
   color: ${theme.colors.pink200};
 `;
 
-const Message = styled.div`
+const DetailMessage = styled.div`
   color: ${theme.colors.purple100};
   margin-bottom: 10px;
+  text-align: center;
 `;

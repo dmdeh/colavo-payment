@@ -14,4 +14,5 @@ export const NextButton = styled(Button)`
   color: white;
   font-weight: 600;
   font-size: large;
+  margin-top: 10px;
 `;
