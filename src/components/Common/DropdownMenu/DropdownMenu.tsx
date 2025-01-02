@@ -4,7 +4,8 @@ import { Button, Divider, Dropdown, Space } from "antd";
 import styled from "styled-components";
 import theme from "../../../styles/theme";
 import { ServiceItem } from "../../../types/CartType";
-import { ButtonGroup, DiscountList, ServiceList } from "./List";
+import { DiscountList, ServiceList } from "./List";
+import ButtonGroup from "./ButtonGroup/ButtonGroup";
 
 interface DropdownMenuProps {
   children: React.ReactNode;

@@ -54,7 +54,8 @@ const Discounts = () => {
     navigate(-1);
   };
 
-  const isChecked = (key: string) => selected.includes(key);
+  const isChecked = (key: string) =>
+    selected.includes(key) || cartItems.some((item) => item.id === key);
 
   return (
     <Container>

@@ -61,16 +61,13 @@ const CartItem = ({ item, serviceItems }: CartItemProps) => {
   const { selectedIds = [], rate } = item;
   const { itemNames, totalDiscount } = getSelectedItems(selectedIds, rate);
 
-  if (!itemNames) {
-    console.error("할인된 아이템을 찾을 수 없습니다.");
-    return;
-  }
+  if (!itemNames) return <div>할인된 아이템을 찾을 수 없습니다.</div>;
 
   return (
     <Item>
       <ItemTitle>
         <ItemName>{name}</ItemName>
-        {itemNames.length > 0 ? (
+        {itemNames.length ? (
           <>
             <ItemDetails>{itemNames.join(", ")}</ItemDetails>
             <Discount>
