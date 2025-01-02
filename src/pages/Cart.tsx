@@ -7,11 +7,15 @@ import { PlusCircleOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import CartItem from "../components/CartItem/CartItem";
 import { useCartStore } from "../store/useCartStore";
 import filterCartItems from "../utils/filterCartItems.ts";
+import useFetchServices from "../hooks/useFetchServices.ts";
+import PriceFormatter from "../components/Common/PriceFormatter/PriceFormatter.tsx";
 
 const Cart = () => {
   const navigate = useNavigate();
   const cartItems = useCartStore((state) => state.cartItems);
   const getTotal = useCartStore((state) => state.getTotal);
+
+  const { currencyCode } = useFetchServices(import.meta.env.VITE_COLAVO_DATA);
 
   return (
     <Container>
@@ -51,7 +55,7 @@ const Cart = () => {
       <Footer>
         <TotalRow>
           <TotalLabel>합계</TotalLabel>
-          <TotalAmount>{getTotal().toLocaleString()}원</TotalAmount>
+          <PriceFormatter amount={getTotal()} currencyCode={currencyCode} />
         </TotalRow>
         <NextButton>다음</NextButton>
       </Footer>
@@ -104,8 +108,3 @@ const TotalRow = styled.div`
 const TotalLabel = styled.span`
   color: ${theme.colors.gray300};
 `;
-
-const TotalAmount = styled.span`
-  font-size: x-large;
-`;
-
