@@ -6,23 +6,12 @@ import { NextButton } from "../styles/button";
 import { PlusCircleOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import CartItem from "../components/CartItem/CartItem";
 import { useCartStore } from "../store/useCartStore";
-import { ServiceItem } from "../types/CartType";
+import filterCartItems from "../utils/filterCartItems.ts";
 
 const Cart = () => {
   const navigate = useNavigate();
   const cartItems = useCartStore((state) => state.cartItems);
-  const cartServiceItems = cartItems.filter(
-    (item): item is ServiceItem => item.type === "services"
-  );
-
-  const totalAmount = cartItems
-    .reduce((total, item) => {
-      if ("count" in item) {
-        return total + item.price * item.count;
-      }
-      return total;
-    }, 0)
-    .toLocaleString();
+  const getTotal = useCartStore((state) => state.getTotal);
 
   return (
     <Container>
@@ -45,7 +34,9 @@ const Cart = () => {
                 key={key}
                 item={item}
                 serviceItems={
-                  item.type === "discounts" ? cartServiceItems : undefined
+                  item.type === "discounts"
+                    ? filterCartItems(cartItems, "services")
+                    : undefined
                 }
               />
             ))
@@ -60,7 +51,7 @@ const Cart = () => {
       <Footer>
         <TotalRow>
           <TotalLabel>합계</TotalLabel>
-          <TotalAmount>{totalAmount}원</TotalAmount>
+          <TotalAmount>{getTotal().toLocaleString()}원</TotalAmount>
         </TotalRow>
         <NextButton>다음</NextButton>
       </Footer>

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { CartItemType } from "../types/CartType";
+import { calculateTotal } from "../utils/calculate";
 
 interface CartStore {
   cartItems: CartItemType[];
@@ -7,6 +8,7 @@ interface CartStore {
   removeFromCart: (id: string) => void;
   updateCount: (id: string, newCount: number) => void;
   updateSelectedIds: (id: string, selectedIds: string[]) => void;
+  getTotal: () => number;
 }
 
 const saveCartItems = (cartItems: CartItemType[]) => {
@@ -17,7 +19,7 @@ const saveCartItems = (cartItems: CartItemType[]) => {
   }
 };
 
-export const useCartStore = create<CartStore>((set) => ({
+export const useCartStore = create<CartStore>((set, get) => ({
   cartItems: JSON.parse(localStorage.getItem("cartItems") || "[]"),
 
   addToCart: (item) =>
@@ -58,4 +60,8 @@ export const useCartStore = create<CartStore>((set) => ({
       saveCartItems(newCart);
       return { cartItems: newCart };
     }),
+
+  getTotal: () => {
+    return calculateTotal(get().cartItems);
+  },
 }));
